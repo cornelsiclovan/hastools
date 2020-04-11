@@ -1,15 +1,15 @@
 install composer <br/>
-install mysql 8
-install php >= 7.2
-clone project
-cd <project directory>
-run composer install
-create a .env file and copy the .envmodel into it
-edit .env user and password for mysql database connection
-run bin\console doctrine:database:create
-run bin\console doctrine:migrations:migrate
-install symfony
-from project directory run symfony server
-project should run at http://localhost:8000
-api available at http://localhost:8000/api
-admin interface available at http://localhost:8000/admin
+install mysql 8 <br/>
+install php >= 7.2 <br/>
+clone project <br/>
+cd <project directory> <br/>
+run composer install <br/>
+create a .env file and copy the .envmodel into it<br/>
+edit .env user and password for mysql database connection <br/>
+run bin\console doctrine:database:create <br/>
+run bin\console doctrine:migrations:migrate <br/>
+install symfony <br/>
+from project directory run symfony server <br/>
+project should run at http://localhost:8000 <br/>
+api available at http://localhost:8000/api <br/>
+admin interface available at http://localhost:8000/admin <br/>
