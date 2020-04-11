@@ -1,4 +1,4 @@
-install composer
+install composer <br/>
 install mysql 8
 install php >= 7.2
 clone project
