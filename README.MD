@@ -2,7 +2,7 @@ install composer <br/>
 install mysql 8 <br/>
 install php >= 7.2 <br/>
 clone project <br/>
-cd <project directory> <br/>
+cd project_directory <br/>
 run composer install <br/>
 create a .env file and copy the .envmodel into it<br/>
 edit .env user and password for mysql database connection <br/>
