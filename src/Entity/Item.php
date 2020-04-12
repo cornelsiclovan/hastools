@@ -24,7 +24,7 @@ class Item
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=1000)
      */
     private $description;
 
@@ -52,6 +52,18 @@ class Item
      * @ORM\Column(type="datetime")
      */
     private $published;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="items")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="items")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $subcategory;
 
     public function getId(): ?int
     {
@@ -140,5 +152,45 @@ class Item
         $this->published = $published;
 
         return $this;
+    }
+
+     /**
+     * @return Category
+     */
+    public function getCategory(): ?Category 
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function setCategory(Category $category): self 
+    {
+       $this->category = $category;
+
+       return $this;
+    }
+
+    /**
+     * @return SubCategory
+     */
+    public function getSubcategory(): ?SubCategory 
+    {
+        return $this->subcategory;
+    }
+
+    /**
+     * @param SubCategory $subcategory
+     */
+    public function setSubcategory(SubCategory $subcategory): self 
+    {
+       $this->subcategory = $subcategory;
+
+       return $this;
+    }
+
+    public function __toString() {
+        return $this->name;
     }
 }
