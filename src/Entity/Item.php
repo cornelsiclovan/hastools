@@ -6,8 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ApiResource(
+ *      itemOperations={"get"},
+ *      collectionOperations={"get"}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
- * @ApiResource
  */
 class Item
 {

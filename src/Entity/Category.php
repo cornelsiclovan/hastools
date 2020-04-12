@@ -8,6 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
+ * @ApiResource(
+ *      itemOperations={"get"},
+ *      collectionOperations={"get"}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  * @ApiResource
  */
