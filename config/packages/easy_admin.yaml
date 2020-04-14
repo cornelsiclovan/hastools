@@ -5,3 +5,9 @@ easy_admin:
         - App\Entity\Category
         - App\Entity\SubCategory
         - App\Entity\User
+        - App\Entity\Client
+        - App\Entity\Project
+        - App\Entity\Address
+        - App\Entity\Zone
+        - App\Entity\Subzone
+        - App\Entity\Service
