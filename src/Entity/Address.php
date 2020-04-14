@@ -116,4 +116,11 @@ class Address
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $fullAddress = $this->street.", ".$this->city.", ".$this->country;
+        
+        return $fullAddress;
+    }
 }
