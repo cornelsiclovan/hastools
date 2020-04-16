@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass="App\Repository\SubzoneRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SubserviceRepository")
  */
-class Subzone
+class Subservice
 {
     /**
      * @ORM\Id()
@@ -26,24 +26,26 @@ class Subzone
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Zone", inversedBy="subzones")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Service", inversedBy="subservices")
      */
-    private $zone;
+    private $service;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Type", inversedBy="subservices")
      */
-    private $size;
+    private $types;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Configuration", mappedBy="subzone")
+     * @ORM\OneToMany(targetEntity="App\Entity\Configuration", mappedBy="subservice")
      */
     private $configurations;
 
     public function __construct()
     {
+        $this->types = new ArrayCollection();
         $this->configurations = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -62,14 +64,14 @@ class Subzone
         return $this;
     }
 
-    public function getZone(): ?Zone
+    public function getService(): ?Service
     {
-        return $this->zone;
+        return $this->service;
     }
 
-    public function setZone(?Zone $zone): self
+    public function setService(?Service $service): self
     {
-        $this->zone = $zone;
+        $this->service = $service;
 
         return $this;
     }
@@ -79,14 +81,28 @@ class Subzone
         return $this->name;
     }
 
-    public function getSize(): ?string
+    /**
+     * @return Collection|Type[]
+     */
+    public function getTypes(): Collection
     {
-        return $this->size;
+        return $this->types;
     }
 
-    public function setSize(string $size): self
+    public function addType(Type $type): self
     {
-        $this->size = $size;
+        if (!$this->types->contains($type)) {
+            $this->types[] = $type;
+        }
+
+        return $this;
+    }
+
+    public function removeType(Type $type): self
+    {
+        if ($this->types->contains($type)) {
+            $this->types->removeElement($type);
+        }
 
         return $this;
     }
@@ -103,7 +119,7 @@ class Subzone
     {
         if (!$this->configurations->contains($configuration)) {
             $this->configurations[] = $configuration;
-            $configuration->setSubzone($this);
+            $configuration->setSubservice($this);
         }
 
         return $this;
@@ -114,8 +130,8 @@ class Subzone
         if ($this->configurations->contains($configuration)) {
             $this->configurations->removeElement($configuration);
             // set the owning side to null (unless already changed)
-            if ($configuration->getSubzone() === $this) {
-                $configuration->setSubzone(null);
+            if ($configuration->getSubservice() === $this) {
+                $configuration->setSubservice(null);
             }
         }
 

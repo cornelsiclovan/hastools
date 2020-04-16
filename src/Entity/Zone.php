@@ -36,14 +36,20 @@ class Zone
     private $subzones;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Service", inversedBy="zones")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="zones")
      */
-    private $services;
+    private $project;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Configuration", mappedBy="zone")
+     */
+    private $configurations;
 
     public function __construct()
     {
         $this->subzones = new ArrayCollection();
         $this->services = new ArrayCollection();
+        $this->configurations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,28 +112,14 @@ class Zone
         return $this;
     }
 
-    /**
-     * @return Collection|Service[]
-     */
-    public function getServices(): Collection
+    public function getProject(): ?Project
     {
-        return $this->services;
+        return $this->project;
     }
 
-    public function addService(Service $service): self
+    public function setProject(?Project $project): self
     {
-        if (!$this->services->contains($service)) {
-            $this->services[] = $service;
-        }
-
-        return $this;
-    }
-
-    public function removeService(Service $service): self
-    {
-        if ($this->services->contains($service)) {
-            $this->services->removeElement($service);
-        }
+        $this->project = $project;
 
         return $this;
     }
@@ -136,4 +128,35 @@ class Zone
     {
         return $this->name;
     }
+
+    /**
+     * @return Collection|Configuration[]
+     */
+    public function getConfigurations(): Collection
+    {
+        return $this->configurations;
+    }
+
+    public function addConfiguration(Configuration $configuration): self
+    {
+        if (!$this->configurations->contains($configuration)) {
+            $this->configurations[] = $configuration;
+            $configuration->setZone($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConfiguration(Configuration $configuration): self
+    {
+        if ($this->configurations->contains($configuration)) {
+            $this->configurations->removeElement($configuration);
+            // set the owning side to null (unless already changed)
+            if ($configuration->getZone() === $this) {
+                $configuration->setZone(null);
+            }
+        }
+
+        return $this;
+    } 
 }

@@ -26,19 +26,19 @@ class Service
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Zone", mappedBy="services")
+     * @ORM\OneToMany(targetEntity="App\Entity\Subservice", mappedBy="service")
      */
-    private $zones;
+    private $subservices;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Subzone", mappedBy="services")
+     * @ORM\OneToMany(targetEntity="App\Entity\Configuration", mappedBy="service")
      */
-    private $subzones;
+    private $configurations;
 
     public function __construct()
     {
-        $this->zones = new ArrayCollection();
-        $this->subzones = new ArrayCollection();
+        $this->subservices = new ArrayCollection();
+        $this->configurations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,64 +58,70 @@ class Service
         return $this;
     }
 
-    /**
-     * @return Collection|Zone[]
-     */
-    public function getZones(): Collection
-    {
-        return $this->zones;
-    }
-
-    public function addZone(Zone $zone): self
-    {
-        if (!$this->zones->contains($zone)) {
-            $this->zones[] = $zone;
-            $zone->addService($this);
-        }
-
-        return $this;
-    }
-
-    public function removeZone(Zone $zone): self
-    {
-        if ($this->zones->contains($zone)) {
-            $this->zones->removeElement($zone);
-            $zone->removeService($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Subzone[]
-     */
-    public function getSubzones(): Collection
-    {
-        return $this->subzones;
-    }
-
-    public function addSubzone(Subzone $subzone): self
-    {
-        if (!$this->subzones->contains($subzone)) {
-            $this->subzones[] = $subzone;
-            $subzone->addService($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubzone(Subzone $subzone): self
-    {
-        if ($this->subzones->contains($subzone)) {
-            $this->subzones->removeElement($subzone);
-            $subzone->removeService($this);
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|Subservice[]
+     */
+    public function getSubservices(): Collection
+    {
+        return $this->subservices;
+    }
+
+    public function addSubservice(Subservice $subservice): self
+    {
+        if (!$this->subservices->contains($subservice)) {
+            $this->subservices[] = $subservice;
+            $subservice->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubservice(Subservice $subservice): self
+    {
+        if ($this->subservices->contains($subservice)) {
+            $this->subservices->removeElement($subservice);
+            // set the owning side to null (unless already changed)
+            if ($subservice->getService() === $this) {
+                $subservice->setService(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Configuration[]
+     */
+    public function getConfigurations(): Collection
+    {
+        return $this->configurations;
+    }
+
+    public function addConfiguration(Configuration $configuration): self
+    {
+        if (!$this->configurations->contains($configuration)) {
+            $this->configurations[] = $configuration;
+            $configuration->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConfiguration(Configuration $configuration): self
+    {
+        if ($this->configurations->contains($configuration)) {
+            $this->configurations->removeElement($configuration);
+            // set the owning side to null (unless already changed)
+            if ($configuration->getService() === $this) {
+                $configuration->setService(null);
+            }
+        }
+
+        return $this;
     }
 }

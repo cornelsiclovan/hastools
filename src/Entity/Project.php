@@ -45,9 +45,15 @@ class Project
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Zone", mappedBy="project")
+     */
+    private $zones;
+
     public function __construct()
     {
         $this->clients = new ArrayCollection();
+        $this->zones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,5 +140,36 @@ class Project
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|Zone[]
+     */
+    public function getZones(): Collection
+    {
+        return $this->zones;
+    }
+
+    public function addZone(Zone $zone): self
+    {
+        if (!$this->zones->contains($zone)) {
+            $this->zones[] = $zone;
+            $zone->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeZone(Zone $zone): self
+    {
+        if ($this->zones->contains($zone)) {
+            $this->zones->removeElement($zone);
+            // set the owning side to null (unless already changed)
+            if ($zone->getProject() === $this) {
+                $zone->setProject(null);
+            }
+        }
+
+        return $this;
     }
 }

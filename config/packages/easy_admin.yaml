@@ -11,3 +11,6 @@ easy_admin:
         - App\Entity\Zone
         - App\Entity\Subzone
         - App\Entity\Service
+        - App\Entity\Subservice
+        - App\Entity\Type
+        - App\Entity\Configuration
